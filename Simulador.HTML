@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SICL - Plataforma Digital Compartida</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background: #f5f7fa;
+    color: #333;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+  header {
+    background: #2d89ef;
+    color: white;
+    padding: 1.2rem 2rem;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.8rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  main {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1.5rem;
+    gap: 1.5rem;
+    justify-content: center;
+    background: white;
+    max-width: 1200px;
+    margin: 1rem auto 2rem auto;
+    border-radius: 8px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+  }
+  section {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.3rem 1.6rem;
+    flex: 1 1 360px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+  }
+  h2 {
+    margin-top: 0;
+    color: #2d89ef;
+    border-bottom: 2px solid #2d89ef;
+    padding-bottom: 0.3rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  button.reset-btn {
+    background: #d9534f;
+    font-size: 0.85rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    margin-left: 1rem;
+    font-weight: 600;
+  }
+  button.reset-btn:hover {
+    background: #c9302c;
+  }
+  label {
+    display: block;
+    margin: 0.5rem 0 0.2rem 0;
+    font-weight: 500;
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 0.5rem 0.6rem;
+    margin-bottom: 1rem;
+    border: 1.8px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #2d89ef;
+  }
+  button {
+    background: #2d89ef;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.1rem;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    align-self: flex-start;
+  }
+  button:hover {
+    background: #1b5fbb;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  th, td {
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid #e1e1e1;
+    text-align: left;
+  }
+  th {
+    background-color: #e9f0ff;
+    color: #2051b7;
+  }
+  .status-pending {
+    color: #f0ad4e;
+    font-weight: 700;
+  }
+  .status-completed {
+    color: #5cb85c;
+    font-weight: 700;
+  }
+  .status-delayed {
+    color: #d9534f;
+    font-weight: 700;
+  }
+  .alert {
+    background: #fffbdd;
+    border-left: 6px solid #f0ad4e;
+    margin-bottom: 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    color: #8a6d3b;
+  }
+  .upload-input {
+    border: 1.8px solid #ccc;
+    border-radius: 5px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  .provider-section {
+    display: flex;
+    flex-direction: column;
+  }
+  footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.85rem;
+    color: #999;
+  }
+  @media (max-width: 840px) {
+    main {
+      max-width: 100%;
+      border-radius: 0;
+      margin: 0;
+      box-shadow: none;
+      padding: 1rem;
+    }
+    section {
+      flex-basis: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  Plataforma Digital Compartida -INEI- SIMULACION
+</header>
+
+<main>
+  <!-- Registro y validación de órdenes de compra -->
+  <section aria-label="Registro de órdenes de compra">
+    <h2>
+      Registro de Órdenes de Compra
+      <button type="button" class="reset-btn" id="resetBtn" title="Borrar toda la información">Resetear Datos</button>
+    </h2>
+    <form id="orderForm">
+      <label for="orderNumber">Número de Orden</label>
+      <input type="text" id="orderNumber" name="orderNumber" required placeholder="Ej: OC12345" />
+      
+      <label for="supplier">Proveedor</label>
+      <input type="text" id="supplier" name="supplier" required placeholder="Nombre del proveedor" />
+      
+      <label for="deliveryDate">Fecha de Entrega</label>
+      <input type="date" id="deliveryDate" name="deliveryDate" required />
+      
+      <label for="documentsPending">Documentos Pendientes</label>
+      <select id="documentsPending" name="documentsPending" required>
+        <option value="No">No</option>
+        <option value="Sí">Sí</option>
+      </select>
+      
+      <label for="observations">Observaciones</label>
+      <textarea id="observations" name="observations" rows="3" placeholder="Escribe alguna observación (opcional)"></textarea>
+      
+      <button type="submit">Registrar Orden</button>
+    </form>
+    <div id="formMessage" role="alert" style="color:green; font-weight:bold;"></div>
+  </section>
+
+  <!-- Visualización del estado de los pedidos -->
+  <section aria-label="Visualización de estado de pedidos">
+    <h2>Estado de Pedidos</h2>
+    <div id="alertsContainer"></div>
+    <table aria-describedby="Estado de los pedidos registrados">
+      <thead>
+        <tr>
+          <th>N° Orden</th>
+          <th>Proveedor</th>
+          <th>Fecha Entrega</th>
+          <th>Doc. Pendientes</th>
+          <th>Observaciones</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody id="ordersTableBody">
+        <!-- Las filas se generarán con JavaScript -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Acceso para Proveedores -->
+  <section aria-label="Acceso para proveedores">
+    <h2>Acceso para Proveedores</h2>
+    <form id="providerForm" class="provider-section">
+      <label for="providerOrderNumber">Número de Orden</label>
+      <input type="text" id="providerOrderNumber" name="providerOrderNumber" required placeholder="Ej: OC12345" />
+      
+      <label for="deliveryConfirmation">Confirmar Entrega</label>
+      <select id="deliveryConfirmation" name="deliveryConfirmation" required>
+        <option value="No">No</option>
+        <option value="Sí">Sí</option>
+      </select>
+      
+      <label for="uploadDocs">Subir Documentación</label>
+      <input type="file" id="uploadDocs" name="uploadDocs" class="upload-input" multiple />
+      
+      <button type="submit">Enviar</button>
+    </form>
+    <div id="providerMessage" role="alert" style="color:green; font-weight:bold;"></div>
+  </section>
+</main>
+
+<footer>
+  &copy; 2024 SICL - Plataforma Digital Compartida
+</footer>
+
+<script>
+  // Utilidad: obtener y guardar órdenes en localStorage
+  function getOrders() {
+    return JSON.parse(localStorage.getItem('orders')) || [];
+  }
+  function saveOrders(orders) {
+    localStorage.setItem('orders', JSON.stringify(orders));
+  }
+
+  // Obtener elementos
+  const orderForm = document.getElementById('orderForm');
+  const ordersTableBody = document.getElementById('ordersTableBody');
+  const alertsContainer = document.getElementById('alertsContainer');
+  const formMessage = document.getElementById('formMessage');
+  const resetBtn = document.getElementById('resetBtn');
+
+  const providerForm = document.getElementById('providerForm');
+  const providerMessage = document.getElementById('providerMessage');
+
+  // Calcular estado de orden según fecha y documentos
+  function calculateStatus(order) {
+    const today = new Date();
+    const deliveryDate = new Date(order.deliveryDate);
+    const docsPending = order.documentsPending === 'Sí';
+
+    if (docsPending) return {text: 'Documentos Pendientes', className: 'status-delayed'};
+    if (deliveryDate < today && order.deliveryConfirmed !== 'Sí') {
+      return {text: 'Entrega Retrasada', className: 'status-delayed'};
+    }
+    if (order.deliveryConfirmed === 'Sí') {
+      return {text: 'Entregado', className: 'status-completed'};
+    }
+    return {text: 'Pendiente', className: 'status-pending'};
+  }
+
+  // Renderizar la tabla de órdenes
+  function renderOrders() {
+    const orders = getOrders();
+    ordersTableBody.innerHTML = '';
+    alertsContainer.innerHTML = '';
+
+    if (orders.length === 0) {
+      ordersTableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#888;">No hay órdenes registradas.</td></tr>';
+      return;
+    }
+
+    const today = new Date();
+
+    orders.forEach(order => {
+      const status = calculateStatus(order);
+
+      // Crear fila
+      const tr = document.createElement('tr');
+
+      tr.innerHTML = `
+        <td>${order.orderNumber}</td>
+        <td>${order.supplier}</td>
+        <td>${order.deliveryDate}</td>
+        <td>${order.documentsPending}</td>
+        <td>${order.observations || '-'}</td>
+        <td class="${status.className}">${status.text}</td>
+      `;
+      ordersTableBody.appendChild(tr);
+
+      // Alertas: proximas fechas, docs pendientes, observaciones importantes
+      const deliveryDate = new Date(order.deliveryDate);
+      const diffDays = Math.ceil((deliveryDate - today) / (1000 * 60 * 60 * 24));
+
+      if (diffDays <= 3 && status.text !== 'Entregado') {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert';
+        alertDiv.textContent = `Alerta: La orden ${order.orderNumber} tiene fecha de entrega próxima (${order.deliveryDate}).`;
+        alertsContainer.appendChild(alertDiv);
+      }
+
+      if (order.documentsPending === 'Sí') {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert';
+        alertDiv.textContent = `Alerta: La orden ${order.orderNumber} tiene documentos pendientes.`;
+        alertsContainer.appendChild(alertDiv);
+      }
+
+      if (order.observations && order.observations.trim() !== '') {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert';
+        alertDiv.textContent = `Observación en orden ${order.orderNumber}: ${order.observations}`;
+        alertsContainer.appendChild(alertDiv);
+      }
+    });
+  }
+
+  // Registrar orden desde el formulario
+  orderForm.addEventListener('submit', e => {
+    e.preventDefault();
+    formMessage.textContent = '';
+
+    const newOrder = {
+      orderNumber: orderForm.orderNumber.value.trim(),
+      supplier: orderForm.supplier.value.trim(),
+      deliveryDate: orderForm.deliveryDate.value,
+      documentsPending: orderForm.documentsPending.value,
+      observations: orderForm.observations.value.trim(),
+      deliveryConfirmed: 'No'
+    };
+
+    // Validación simple: evitar orden repetida
+    const orders = getOrders();
+    if (orders.some(o => o.orderNumber === newOrder.orderNumber)) {
+      formMessage.style.color = 'red';
+      formMessage.textContent = 'Error: Ya existe una orden con ese número.';
+      return;
+    }
+
+    orders.push(newOrder);
+    saveOrders(orders);
+    orderForm.reset();
+    formMessage.style.color = 'green';
+    formMessage.textContent = 'Orden registrada exitosamente.';
+
+    renderOrders();
+  });
+
+  // Proveedores confirman entrega y suben documentación (simulado)
+  providerForm.addEventListener('submit', e => {
+    e.preventDefault();
+    providerMessage.textContent = '';
+
+    const orderNumber = providerForm.providerOrderNumber.value.trim();
+    const deliveryConfirmation = providerForm.deliveryConfirmation.value;
+    const docsFiles = providerForm.uploadDocs.files;
+
+    const orders = getOrders();
+    const orderIndex = orders.findIndex(o => o.orderNumber === orderNumber);
+
+    if (orderIndex === -1) {
+      providerMessage.style.color = 'red';
+      providerMessage.textContent = 'Error: Orden no encontrada.';
+      return;
+    }
+
+    // Actualizar orden con confirmación entrega y documentos pendientes segun si subieron archivos
+    orders[orderIndex].deliveryConfirmed = deliveryConfirmation;
+
+    if (docsFiles.length > 0) {
+      orders[orderIndex].documentsPending = 'No';
+    }
+
+    saveOrders(orders);
+    providerForm.reset();
+    providerMessage.style.color = 'green';
+    providerMessage.textContent = 'Información enviada con éxito.';
+
+    renderOrders();
+  });
+
+  // Evento botón resetear datos
+  resetBtn.addEventListener('click', () => {
+    if (confirm('¿Estás seguro que quieres eliminar toda la información guardada? Esta acción no se puede deshacer.')) {
+      localStorage.removeItem('orders');
+      renderOrders();
+      formMessage.textContent = '';
+      providerMessage.textContent = '';
+      alert('Datos reseteados correctamente.');
+    }
+  });
+
+  // Cargar inicialmente las órdenes si hay
+  renderOrders();
+
+</script>
+
+</body>
+</html>
